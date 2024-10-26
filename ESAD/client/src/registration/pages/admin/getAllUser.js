@@ -104,7 +104,7 @@ class GetAllUsers extends Component {
 
         //const csvExporter = new ExportToCsv(options);
 
-        csvExporter.generateCsv(data);
+        //csvExporter.generateCsv(data);
     }
     ExportPDF = () => {
         const unit = "pt";

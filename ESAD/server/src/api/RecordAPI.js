@@ -5,7 +5,6 @@ const controller = require('../controllers/RecordController');
 module.exports = function () {
     router.get('/', controller.getAllRecords);
     router.get('/:id', controller.getSpecificUserRecord);
-    //router.get('/:id', controller.getSpecificRecord);
     router.post('/',controller.addRecords );
     router.put('/:id',controller.editRecords);
     router.delete('/:id',controller.deleteRecords);

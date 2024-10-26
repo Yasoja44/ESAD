@@ -1,13 +1,15 @@
 const jwt = require('jsonwebtoken');
 
+//Verification of user roles
 module.exports = function (req,res,next) {
+    
     try{
         const token = req.header('Authorization');
         const verifiedUser = jwt.verify(
             token,
             process.env.JWT_SECRET
         )
-        //newly added
+        
         const verifiedAdmin = jwt.verify(
             token,
             process.env.JWT_SECRET

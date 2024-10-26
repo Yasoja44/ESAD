@@ -36,17 +36,13 @@ function Routes() {
                             <Route path="/doctor" element={<User />} />
                             <Route path="/admin" element={<Admin />} />
                             <Route path="/patient" element={<Employee />} />
-
                             <Route path="/login" element={<Login /> } />
                             <Route path="/profile" element={<Profile />} />
                             <Route path="/forgot" element={<Forgot />} />
-
                             <Route path="/register" element={<Register />}  />
-
                             <Route path="/edit_user/:id" element={<AdminEditUser />} />
                             <Route path="/getAll" element={<GetAllUsers />} />
                             <Route path="/adminReg" element={<AdminRegister />} />
-
                             <Route path="/users/reset_password/:id" element={<Reset />}/>
                             <Route path="/users/activate/:auth_token" element={<ConfirmEmail />}/>
 

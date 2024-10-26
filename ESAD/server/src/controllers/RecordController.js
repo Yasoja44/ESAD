@@ -1,5 +1,6 @@
 const Records = require('../models/Records');
 
+//Add medical records
 const addRecords = async (req, res) => {
     if (req.body) {
 
@@ -17,10 +18,10 @@ const addRecords = async (req, res) => {
     }
 }
 
+//Get all medical records
 const getAllRecords = async (req, res) => {
 
     await Records.find()
-        //.populate('workout_users', 'username email')
         .populate()
         .then(data => {
             res.status(200).send({ data: data });
@@ -30,10 +31,10 @@ const getAllRecords = async (req, res) => {
         });
 }
 
+//Get a specific medical record
 const getSpecificRecord = async (req, res) => {
     if (req.params && req.params.id) {
         await Records.findById(req.params.id)
-            //.populate('workout_users', 'username email')
             .then(response => {
                 res.status(200).send({ data: response });
             })
@@ -43,12 +44,11 @@ const getSpecificRecord = async (req, res) => {
     }
 }
 
+//Add medical for specified user
 const getSpecificUserRecord = async (req, res) => {
     
-    //if (req.params && req.params.id) {
        
         await Records.find({record_user:req.params.id})
-            //.populate('workout_users', 'username email')
             .then(response => {
                 res.status(200).send({ data: response });
             })
@@ -59,6 +59,8 @@ const getSpecificUserRecord = async (req, res) => {
     //}
 }
 
+
+//Edit records
 const editRecords = async (req, res) => {
     if (req.params && req.params.id) {
 
@@ -74,6 +76,7 @@ const editRecords = async (req, res) => {
     }
 }
 
+//Delete records
 const deleteRecords = async (req, res) => {
     if (req.params && req.params.id) {
 

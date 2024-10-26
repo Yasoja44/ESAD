@@ -5,12 +5,14 @@ const EmailSend =require('./SendEmail')
 const nodemailer = require("nodemailer");
 const {CLIENT_URL} = process.env
 
+//Adding users
 const addUsers= async (req, res) => {
     try {
         const {firstName, lastName, email, mobileNo, address,DOB,Gender,password} = req.body
 
         console.log(req.body)
 
+        //User validations
         if (!firstName || !lastName || !email || !mobileNo || !address || !DOB || !Gender|| !password)
             return res.status(400).json({alert: "Please enter fill in fields"})
 
@@ -19,21 +21,15 @@ const addUsers= async (req, res) => {
         }
 
         if (password.length < 3) {
-            return res.status(400).json({alert: "Password  at least 3 characters"});
+            return res.status(400).json({alert: "Password has to be at least 3 characters"});
         }
 
         const passwordHash = await bcrypt.hash(password, 12);
 
-        //const authToken = ActivationToken(newUser);
-
-        // const url = `${CLIENT_URL}/users/activate/${authToken}`
-        // EmailSend(email, url,"Verify Email Button");
-
-    
         const userCheckEmail = await UserSchema.findOne({email})
 
         if(userCheckEmail){
-            return res.status(400).json({alert: "There is a already uses this email"});
+            return res.status(400).json({alert: "There is a user that already uses this email"});
         }
 
         const newUser = new UserSchema({
@@ -54,6 +50,7 @@ const addUsers= async (req, res) => {
     }
 }
 
+//Activating Email
 const UserActiveEmail= async (req, res) => {
     try {
         const {auth_token} = req.body
@@ -86,6 +83,7 @@ const UserActiveEmail= async (req, res) => {
     }
 }
 
+//Login functionality
 const login = async (req, res)=>{
     try{
         const {email,password} =req.body;
@@ -96,9 +94,10 @@ const login = async (req, res)=>{
 
         const user =await UserSchema.findOne({email});
         if(!user){
-            return res.status(400).json({errormessage:"already use the email"});
+            return res.status(400).json({errormessage:"No one using this email"});
         }
 
+        //decrypting the passowrd as to see if the entered password matches
         const passwordMatch = await bcrypt.compare(password, user.password);
 
 
@@ -109,6 +108,7 @@ const login = async (req, res)=>{
                     id: user.id
                 }
             };
+            //Creating the activation token and sending it back to client
             const token = ActivationToken(payload);
             res.json({token:token});
 
@@ -118,6 +118,8 @@ const login = async (req, res)=>{
         return res.status(500).json({alert:"server Error"});
     }
 }
+
+//Get one user information except password
 const getSpecificUser = async (req,res) =>{
     try {
         const user = await UserSchema.findById(req.user.id).select('-password')
@@ -128,6 +130,8 @@ const getSpecificUser = async (req,res) =>{
         return res.status(500).json({alert:"server Error"});
     }
 }
+
+//Get one admin
 const getSpecificAdminUsers = async (req, res) => {
     try {
         if (req.params && req.params.id) {
@@ -144,6 +148,8 @@ const getSpecificAdminUsers = async (req, res) => {
         return res.status(500).json({msg:"server Error..."});
     }
 }
+
+//Add admin user
 const adminAddUsers = async (req, res) => {
     try {
         let {firstName, lastName, email, mobileNo, address, DOB,Gender, user_password,position} = req.body;
@@ -152,7 +158,7 @@ const adminAddUsers = async (req, res) => {
         if (user) {
             return res.status(400).json({alert: "There is a already uses this email"});
         }
-        //hash the password
+        //hashing the password
         const salt = await bcrypt.genSalt();
         const password = await bcrypt.hash(user_password, salt);
 
@@ -177,6 +183,7 @@ const adminAddUsers = async (req, res) => {
 
         const authToken = ActivationToken(payload);
 
+        //Creating the mail to send to the registered users
         var transporter = nodemailer.createTransport({
 
             service: 'Gmail',
@@ -218,19 +225,24 @@ const adminAddUsers = async (req, res) => {
         return res.status(500).json({msg: "server Error..."});
     }
 }
+
+//Forget Password functionality
 const forgotPassword = async (req, res)=>{
     try{
         const {email} = req.body;
 
         const user =await UserSchema.findOne({email});
         if(!user){
-            return res.status(400).json({errormessage:"already use the email"});
+            return res.status(400).json({errormessage:"No one using this email"});
         }
 
+        //Jwt token to reset password
         const access_jwt_token  = ActivationToken({id:user._id});
 
+        //Craeting the url to reset the password
         const url =`${CLIENT_URL}/users/reset_password/${access_jwt_token}`
 
+        //Sending the email to reset the password
         EmailSend(email,url,"Reset Your Password");
 
         res.status(200).json({alert:"please check the email"});
@@ -240,6 +252,8 @@ const forgotPassword = async (req, res)=>{
         return res.status(500).json({alert:"server Error"});
     }
 }
+
+//Reseting user PW
 const resetPassword = async (req, res)=>{
     try{
         const {password}= req.body;
@@ -320,13 +334,17 @@ const deleteUsers = async (req, res) => {
             });
     }
 }
+
+//Activating the jwt tocken
 const ActivationToken = (payload) => {
     return jwt.sign(payload, process.env.JWT_SECRET,{expiresIn:'1h'})
 }
+
 function validateEmail(user_email) {
     const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(String(user_email).toLowerCase());
 }
+
 module.exports = {
     addUsers,
     UserActiveEmail,

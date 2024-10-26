@@ -86,23 +86,7 @@ class addRecord extends Component {
             record_field3:'',
 
         };
-        /*if (this.state.touched.workout_name && workout_name.length < 3)
-            errors.workout_name = 'Name should be >= 3 characters';
 
-        if (this.state.touched.workout_theme && workout_theme.length < 3)
-            errors.workout_theme = 'Theme should be >= 3 characters';
-
-        if (this.state.touched.workout_description && workout_description.length < 3)
-            errors.workout_description = 'Description should be >= 3 characters';
-
-        if (this.state.touched.workout_schedule && workout_schedule.length < 3)
-            errors.workout_schedule = 'Schedule should be >= 3 characters';
-        
-        if (this.state.touched.workout_diet && workout_diet.length < 3)
-            errors.workout_diet = 'Diet should be >= 3 characters';
-
-        if (this.state.touched.workout_price && parseInt(workout_price) <= 0)
-            errors.workout_price = 'Price shoule be a valid number';*/
 
         return errors;
     }
@@ -117,14 +101,7 @@ class addRecord extends Component {
             record_field2: this.state.record_field2,
             record_field3: this.state.record_field3
         };
-        /*if (this.state.record_name.length < 3 || this.state.record_description.length < 3 ||
-            this.state.workout_description.length < 3 || this.state.workout_schedule.length < 3  ||
-            this.state.workout_diet.length < 3 || this.state.workout_price <= 0 ){
-            this.validate(this.state.workout_name,this.state.workout_theme,this.state.workout_description,this.state.workout_schedule,
-                this.state.workout_diet,this.state.workout_price)
-            let message = "Workout Creation Failed"
-            SubmissionFail2(message);
-        } else {*/
+        
             console.log('DATA TO SEND', record)
             axios.post('/records/',record)
                 .then(response => {
@@ -135,7 +112,7 @@ class addRecord extends Component {
                     console.log(error.message);
                     SubmissionFail();
                 })
-            //}
+            
     }
 
     render() {

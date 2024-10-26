@@ -16,6 +16,7 @@ export const LoadUserOther = async () => {
     return await axios.get('/users');
 }
 
+//Fetching users
 export const LoadUser = () => async dispatch => {
     if (localStorage.getItem('token')) {
         setToken(localStorage.getItem('token'));
@@ -53,6 +54,7 @@ const LoggedAlert = () => {
     })
 }
 
+//User login function
 export const LoginUser = (email, password) => async dispatch => {
     try {
         const config = {

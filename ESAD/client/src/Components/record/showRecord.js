@@ -59,13 +59,7 @@ class showRecord extends Component {
                                                    <h5>{item.record_field3 }</h5>
                                                </div>
                                            </div>
-                                           {/*<div className="card-footer">
-                                               <button className="btn btn-warning" onClick={() => this.updateWorkout(item._id)}>Update</button>
-                                               &nbsp;
-                                               <button className="btn btn-danger" onClick={() => this.deleteWorkout(item._id)}>Delete</button>
-                                           </div>*/}
-    
-                                           {/*</div>*/}
+                                           
                                        </div>
                                    </Col>
                                ))}

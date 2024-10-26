@@ -84,6 +84,7 @@ const Login = ({loginUser, isLoggedIn}) => {
             let message = "Invalid Email"
             fieldmissAlart(message);
         }else {
+            //Performing the login process
             loginUser(email, password);
         }
     }

@@ -44,7 +44,7 @@ function Footer() {
                     </div>
                     <div className="row justify-content-center">
                         <div className="col-auto">
-                            <p>© Copyright 2021 Equinox</p>
+                            <p>© Copyright 2024 Equinox</p>
                         </div>
                     </div>
                 </div>
